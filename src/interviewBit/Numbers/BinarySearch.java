@@ -8,9 +8,10 @@ import java.util.*;
  */
 public class BinarySearch {
     public static void main(String [] args) {
-        Integer[] list = {1,5,6,7,8};
-        Integer[] list2 = {9,23,30,44,58,72,73,78};
-        System.out.println(books(Arrays.asList(list),5));
+        int[] list = {1,5,6,7,8};
+        int[] list2 = {9,23,30,44,58,72,73,78};
+
+        //System.out.println(findMedianSortedArrays(Arrays.asList(list),Arrays.asList(list2)));
 
     }
 

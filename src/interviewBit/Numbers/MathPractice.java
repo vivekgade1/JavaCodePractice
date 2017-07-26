@@ -9,8 +9,16 @@ import java.util.*;
  */
 public class MathPractice {
     public static void main(String[] args){
-        System.out.println(trailingZeroes(5487));
+        System.out.println(reverse(1534236469));
     }
+
+
+    /*----------------reverse and interger---------*/
+    /*public static int reverse(int x) {
+        int result = 0;
+        return result;
+    }*/
+    /*----------------reverse and interger---------*/
 
     public static int solve(int[] A, int B, int C) {
         String num = Integer.toString(C);
