@@ -137,7 +137,7 @@ public class StringProblems {
         return result.reverse().toString();
     }
 
-    /*-------------------------------------------------------------------------*/
+    /*------------------------------end of multiply two strings-------------------------------------------*/
 
 
     /*------------------Implementation of StrStr-------------------------------*/
@@ -188,7 +188,7 @@ public class StringProblems {
     }
     /*------------------end count and say--------------*/
 
-    /*----------------------------------------------------------*/
+    /*------------------------ZIG ZAG Printing ----------------------------------*/
     public static String convert(String a, int high) {
         int low = 1,step =0,turn,index = 0;
         StringBuilder result = new StringBuilder();
@@ -223,7 +223,7 @@ public class StringProblems {
         return result.toString();
     }
 
-    /*----------------------------------------------------------*/
+    /*------------------------End of ZIG ZAG printing----------------------------------*/
 
     /*---------------------Adding Binary numbers --------------*/
     public  static String addBinary(String a, String b) {
@@ -344,6 +344,7 @@ public class StringProblems {
     }
 
     /*------------------------end of reverse a string------------------------*/
+
     /*------------------------Convert string to integer and reverse ----------------*/
 
     public static double convertStrToInt(String a){
@@ -415,7 +416,150 @@ public class StringProblems {
         return longest_palindrome.toString();
 
     }
-    /*----------------------end of longest Palindorme in the string-------------------*/
+    /*--------------------- end of Longest palindrome in a string----------------------*/
+
+    /*---------------------------------- Pretty JSON -------------------------------------------------------*/
+
+
+    public static ArrayList<String> prettyJSON(String a) {
+        int indents = 0;
+        ArrayList<String> brackets = new ArrayList<>();
+        HashMap brackets_mapping = new HashMap();
+        brackets_mapping.put("{","}");
+        brackets_mapping.put("[","]");
+        ArrayList<String> result = new ArrayList<>();
+        StringBuilder element = new StringBuilder();
+        boolean is_brack = true;
+
+        for (int i = 0; i < a.length() ; i++) {
+            String indent_str = setIndentation(brackets.size());
+            switch (a.charAt(i)){
+                case '{':
+                    result.add(indent_str.concat("{"));
+                    brackets.add("{");
+                    break;
+                case '[':
+                    result.add(indent_str.concat("["));
+                    brackets.add("[");
+                    break;
+                case '}':
+                    brackets.remove(brackets.size()-1);
+                    indent_str = setIndentation(brackets.size());
+                    if(a.charAt(i+1) == ',') {
+                        result.add(indent_str.concat("},"));
+                        i++;
+                    }else{
+                        result.add(indent_str.concat("}"));
+                    }
+                    break;
+                case ']':
+                    brackets.remove(brackets.size()-1);
+                    indent_str = setIndentation(brackets.size());
+                    if(a.charAt(i+1) == ',') {
+                        result.add(indent_str.concat("],"));
+                        i++;
+                    }else{
+                        result.add(indent_str.concat("]"));
+                    }
+                    break;
+                default:
+                    if(!Character.toString(a.charAt(i)).equals(" ")) {
+                        element = new StringBuilder();
+                        element.append(indent_str);
+                        while (a.charAt(i) != ',' && a.charAt(i) != '}' && a.charAt(i) != ']'&& a.charAt(i) != '[' && a.charAt(i) != '{' && i<a.length()) {
+                            element.append(a.charAt(i));
+                            i++;
+                        }
+                        if(a.charAt(i) == ',') element.append(",");
+                        else i --;
+                        result.add(element.toString());
+                        break;
+                    }else break;
+            }
+        }
+
+        return result;
+    }
+
+    private static String setIndentation(int size) {
+        String result = "";
+        for (int i = 0; i < size ; i++) {
+            result +="\t";
+        }
+        return result;
+    }
+
+    /*-----------------------------------End of Pretty JSON------------------------------------------------------*/
+
+
+    /*------------------------------------longest Common Prefix in a list-----------------------------------------------------*/
+    public static String longestCommonPrefix(List<String> a) {
+        StringBuffer longest_common_prefix = new StringBuffer();
+        String first_word = a.get(0);
+        int total = a.size();
+        char at_pos_i;
+        for (int i = 0; i < first_word.length() ; i++) {
+            at_pos_i = first_word.charAt(i);
+            int count = 0;
+            try{
+                for (String words : a) {
+                    if(words.charAt(i) == at_pos_i){
+                        count ++;
+                    }else{
+                        break;
+                    }
+                }
+            }catch (StringIndexOutOfBoundsException e){
+                break;
+            }
+            if(count == total) longest_common_prefix.append(at_pos_i);
+            if(!longest_common_prefix.toString().equals(first_word.substring(0,i+1))){
+                break;
+            }
+        }
+
+        return longest_common_prefix.toString();
+
+    }
+
+    /*----------------------------------end of longestCommonPrefix-------------------------------------------------------*/
+
+    /*----------------------------------Power of 2-------------------------------------------------------*/
+
+
+    public static int power(String a) {
+        StringBuffer inter_result = new StringBuffer(a);
+        if(a.equals("1")) return 0;
+        while (Character.getNumericValue(inter_result.charAt(inter_result.length()-1))%2==0){
+            inter_result = divideByTwo(inter_result);
+        }
+        if(inter_result.length()>1) return 0;
+        if(Integer.parseInt(inter_result.toString()) == 1)return 1;
+        return 0;
+    }
+
+    private static StringBuffer divideByTwo(StringBuffer num) {
+        StringBuffer result = new StringBuffer();
+        int carry = 0,digit;
+        for (int i = 0; i < num.length() ; i++) {
+            StringBuffer dividend = new StringBuffer();
+            dividend.append(carry);
+            dividend.append(num.charAt(i));
+            digit = Integer.parseInt(dividend.toString());
+
+            while (digit <2 && i <num.length()-1){
+                i= i+1;
+                dividend.append(num.charAt(i));
+                digit = Integer.parseInt(dividend.toString());
+            }
+            result.append(digit/2);
+            carry = digit%2;
+        }
+
+        return result;
+    }
+
+    /*------------------------end of power of 2-------------------------------------*/
 
     /*----------length of last word in the sentence string-------*/
     public static int lengthOfLastWord(final String a){
@@ -474,7 +618,7 @@ public class StringProblems {
     }
     /*----------end of get longest word in the sentence string-------*/
 
-    /*----------check for palindrom string-------*/
+    /*----------palindrom string-------*/
 
     public static int isPalindrome(String a) throws NullPointerException, StringIndexOutOfBoundsException{
 
@@ -513,36 +657,36 @@ public class StringProblems {
 
     /*-------------------------- minimum characters to make it a palindrome --------------------------*/
     public static int solve(String A){
-            try {
-                int size = A.length();
-                int last_occurrance = size-1;
-                int inter_size = 0;
-                StringBuffer sub_string_a = new StringBuffer(A);
-                int is_palindrome = isPalindrome(A);
-                char first_letter = sub_string_a.charAt(0);
-                int count = 0;
-                while (is_palindrome != 1){
-                    inter_size = sub_string_a.substring(0,last_occurrance+1).length();
-                    last_occurrance = checkPositionFromEnd(sub_string_a.substring(0,last_occurrance+1),first_letter);
-                    if(last_occurrance == 0 && count == 0){
-                        return size -2;
-                    }else if(last_occurrance == 0 && count != 0){
-                        break;
-                    }
-                    count += inter_size - last_occurrance - 1;
-                    is_palindrome = isPalindrome(sub_string_a.substring(0,last_occurrance+1).toString());
-                    if(is_palindrome != 1) {
-                        last_occurrance --;
-                        count++;
-                    }
-
+        try {
+            int size = A.length();
+            int last_occurrance = size-1;
+            int inter_size = 0;
+            StringBuffer sub_string_a = new StringBuffer(A);
+            int is_palindrome = isPalindrome(A);
+            char first_letter = sub_string_a.charAt(0);
+            int count = 0;
+            while (is_palindrome != 1){
+                inter_size = sub_string_a.substring(0,last_occurrance+1).length();
+                last_occurrance = checkPositionFromEnd(sub_string_a.substring(0,last_occurrance+1),first_letter);
+                if(last_occurrance == 0 && count == 0){
+                    return size -2;
+                }else if(last_occurrance == 0 && count != 0){
+                    break;
                 }
-                return count;
-
-            }catch (NullPointerException e){
+                count += inter_size - last_occurrance - 1;
+                is_palindrome = isPalindrome(sub_string_a.substring(0,last_occurrance+1).toString());
+                if(is_palindrome != 1) {
+                    last_occurrance --;
+                    count++;
+                }
 
             }
-            return 0;
+            return count;
+
+        }catch (NullPointerException e){
+
+        }
+        return 0;
 
     }
 
@@ -567,8 +711,6 @@ public class StringProblems {
         }
 
     }
-
-    
     /*-------------------------- end minimum characters to make it a palindrome --------------------------*/
 
 }
