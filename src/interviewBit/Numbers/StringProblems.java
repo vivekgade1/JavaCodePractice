@@ -10,9 +10,141 @@ import java.util.List;
  */
 public class StringProblems {
     public static void main(String[] args){
-        String[] list = {"This", "is", "an", "example", "of", "text", "justification."};
-        System.out.println(fullJustify(Arrays.asList(list),16));
+        //String[] list = {"This", "is", "an", "example", "of", "text", "justification."};
+        System.out.println(restoreIpAddresses("25525511135"));
     }
+
+    public static ArrayList<String> restoreIpAddresses(String a) {
+        final int max_len = 16;
+        final int min_len = 4;
+        final int max = 225;
+        final int size = a.length();
+        ArrayList<String> ip_list = new ArrayList<>();
+        StringBuilder ip = new StringBuilder();
+        ip_list = recursiveBuilding(a,3,ip,size,ip_list);
+        return ip_list;
+    }
+
+    public static ArrayList recursiveBuilding(String num, int indx, StringBuilder ip, int size, ArrayList ip_list){
+        for (int i = indx; i >0 ; i--) {
+            int address = Integer.parseInt(num.substring(0,indx));
+            if( address<= 225 && address >0){
+                ip.append("." + address);
+                recursiveBuilding(num.substring(indx),i,ip,size,ip_list);
+                if(ip.length() > size);
+            }else{
+                ip = new StringBuilder();
+            }
+        }
+        return ip_list;
+    }
+    /*-------------------------------Compare versions ---------------------------------------------*/
+    public static int compareVersion(String a, String b) {
+        String [] list_a = a.replace(".","-").split("-");
+        String [] list_b = b.replace(".","-").split("-");
+        int size = list_a.length > list_b.length ? list_b.length: list_a.length;
+
+        for (int i = 0; i < size ; i++) {
+            if(compareStrs(list_a[i],list_b[i]) == 1){
+                return 1;
+            }else if(compareStrs(list_a[i],list_b[i]) == -1){
+                return -1;
+            }
+        }
+
+        if(list_a.length > list_b.length) {
+            if(!list_a[list_b.length].equals("0")){
+                return 1;
+            }
+        } else if(list_a.length < list_b.length) {
+            if(!list_b[list_a.length].equals("0")){
+                return -1;
+            }
+        }
+        return 0;
+    }
+
+    public static int compareStrs(String a, String b){
+        if (a.length() != b.length()) {
+            int low = 0;
+            while (a.charAt(low) =='0'){
+                low ++;
+            }
+            a = a.substring(low);
+            low = 0;
+            while (b.charAt(low) =='0'){
+                low ++;
+            }
+            b = b.substring(low);
+        }
+
+        if(a.length() > b.length()){
+          return 1;
+      }else{
+          if(a.length() == b.length()){
+              for (int i = 0; i < a.length(); i++) {
+                  if(Character.getNumericValue(a.charAt(i)) > Character.getNumericValue(b.charAt(i))){
+                      return 1;
+                  }else if(Character.getNumericValue(a.charAt(i)) < Character.getNumericValue(b.charAt(i))){
+                      return -1;
+                  }
+              }
+              return 0;
+          }else{
+              return -1;
+          }
+      }
+    }
+    /*------------------------------- end of Compare versions ---------------------------------------------*/
+
+    /*------------------------------------Interview Bit ATIO------------------------------------------------------*/
+    public static int atoi(final String a) {
+        int result = 0;
+        int low = 0;
+        boolean is_neg = false;
+        if(a.length() == 0) return 0;
+        String first_num = a.split(" ")[0];
+
+        // check for empty or grabage at the beginnning
+        if(first_num.charAt(0) == '-'){
+            is_neg = true;
+            low++;
+        }else if(first_num.charAt(0) == '+'){
+            low++;
+        }
+
+        if(low == first_num.length()) return 0;
+        if(!Character.isDigit(first_num.charAt(low))) return 0;
+
+        // get the size of the number int he first string
+        int size = 1;
+        while (size < first_num.length() && Character.isDigit(first_num.charAt(size))){
+            size++;
+        }
+        // desired number and reset low and size to that desired number
+        String desired_number = first_num = first_num.substring(low,size);
+        low = 0;
+        size = desired_number.length();
+
+        while (low < size){
+            if(Character.isDigit(desired_number.charAt(low))){
+                int digit = Character.getNumericValue(desired_number.charAt(low));
+                result += digit*(Math.pow(10,size-low-1));
+            }else{
+                break;
+            }
+            low ++;
+        }
+
+        if(is_neg) result *= -1;
+
+        if(result >= Integer.MAX_VALUE) return Integer.MAX_VALUE;
+        else if(result < Integer.MIN_VALUE || result == Integer.MIN_VALUE +1) {
+            return Integer.MIN_VALUE;
+        }
+        return result;
+    }
+    /*------------------------------------- end Interview Bit ATIO -----------------------------------------------*/
 
     /*------------------------------------Justified text------------------------------------------------------*/
     public static ArrayList<String> fullJustify(List<String> a, int b) {
