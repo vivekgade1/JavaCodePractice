@@ -11,33 +11,112 @@ import java.util.List;
 public class StringProblems {
     public static void main(String[] args){
         //String[] list = {"This", "is", "an", "example", "of", "text", "justification."};
-        System.out.println(restoreIpAddresses("25525511135"));
+        System.out.println(isNumber("3. "));
     }
 
+    /*------------------------------- Valid Number ---------------------------------------------*/
+
+    public static int isNumber(final String a) {
+        int e_index = a.indexOf('e');
+        String trimmied_a = a.trim();
+        if(trimmied_a.length() > 0) {
+            if (e_index == -1) {
+                if(trimmied_a.charAt(trimmied_a.length()-1) == '.') return 0;
+                String[] nums = trimmied_a.replace(".", "-").split("-");
+                if(nums.length ==0 ) return 0;
+                if (nums[0].length() > 0 && nums[0].charAt(0) == '-') nums[0] = nums[0].substring(1, nums.length);
+                for (String part : nums) {
+                    if (nums[0].length() == 0) continue;
+                    if (!integerCheck(part)) {
+                        return 0;
+                    }
+                }
+                return 1;
+            } else {
+                String[] nums = trimmied_a.split("e");
+                if (nums.length == 2) {
+                    if (nums[0].charAt(0) == '-') nums[0] = nums[0].substring(1, nums.length);
+                    if (nums[1].charAt(0) == '-') nums[1] = nums[1].substring(1, nums.length);
+                    if (isNumber(nums[0]) == 1 && integerCheck(nums[1])) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return 0;
+                }
+            }
+        }else {
+            return 0;
+        }
+
+    }
+
+    public static boolean integerCheck(String num){
+        for (int i = 0; i < num.length() ; i++) {
+                if(!Character.isDigit(num.charAt(i))){
+                    return false;
+                }
+            }
+            return true;
+    }
+
+    /*------------------------------- End of Valid number  ---------------------------------------------*/
+
+    /*------------------------------- check ip  ---------------------------------------------*/
     public static ArrayList<String> restoreIpAddresses(String a) {
-        final int max_len = 16;
-        final int min_len = 4;
-        final int max = 225;
         final int size = a.length();
         ArrayList<String> ip_list = new ArrayList<>();
-        StringBuilder ip = new StringBuilder();
-        ip_list = recursiveBuilding(a,3,ip,size,ip_list);
-        return ip_list;
-    }
 
-    public static ArrayList recursiveBuilding(String num, int indx, StringBuilder ip, int size, ArrayList ip_list){
-        for (int i = indx; i >0 ; i--) {
-            int address = Integer.parseInt(num.substring(0,indx));
-            if( address<= 225 && address >0){
-                ip.append("." + address);
-                recursiveBuilding(num.substring(indx),i,ip,size,ip_list);
-                if(ip.length() > size);
-            }else{
-                ip = new StringBuilder();
+        for (int i = 0; i <3 ; i++) {
+            if(size-i+1 <= 12){
+                String port_1 = a.substring(0,i+1);
+                String sub_1 = a.substring(i+1);
+                if (checkPort(port_1)) {
+                    for (int j = 0; j < 3 ; j++) {
+                        if(sub_1.length() <= 9 && sub_1.length() > 0 && j < sub_1.length()){
+                            String port_2 = sub_1.substring(0,j+1);
+                            if (checkPort(port_2)) {
+                                String sub_2 = sub_1.substring(j+1);
+                                for (int k = 0; k < 3 ; k++) {
+                                    if(sub_2.length() <= 6 && sub_2.length() > 0 && k < sub_2.length()){
+                                        String port_3 = sub_2.substring(0,k+1);
+                                        if (checkPort(port_3)) {
+                                            String sub_3 = sub_2.substring(k+1);
+                                            if(sub_3.length()<=3 && sub_3.length() > 0){
+                                                String port_4 = sub_3;
+                                                if (checkPort(port_4)) {
+                                                    ip_list.add(port_1 +"." + port_2 + "." + port_3 + "." + port_4);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
+
+
         }
         return ip_list;
     }
+
+
+    public static boolean checkPort(String a){
+        int port = Integer.parseInt(a);
+        String port_str = Integer.toString(port);
+        if(a.equals(port_str)){
+            if(port <= 255 && port >=0){
+                return true;
+            }else return false;
+        }else{
+            return false;
+        }
+    }
+
+    /*------------------------------- End of check ip  ---------------------------------------------*/
     /*-------------------------------Compare versions ---------------------------------------------*/
     public static int compareVersion(String a, String b) {
         String [] list_a = a.replace(".","-").split("-");
