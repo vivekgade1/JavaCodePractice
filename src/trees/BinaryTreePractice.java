@@ -139,7 +139,7 @@ public class BinaryTreePractice {
     }
 
     public static int sumNumbers(TreeNode a) {
-        ArrayList<> path_sums = new ArrayList<>();
+        ArrayList<Integer> path_sums = new ArrayList<>();
         ArrayList<ArrayList<Integer>> result = new ArrayList<>();
         int total = 0;
         pathSum(a,path_sums,result);
