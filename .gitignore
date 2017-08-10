@@ -1,3 +1,12 @@
 *.class
-out/
 .idea/
+/out/production/Java Practice/*.class
+/out/production/Java Practice/interviewBit/Numbers/*.class
+/out/production/JavaCodePractice/interviewBit/Numbers/*.class
+Solution.class
+TestJunit.class
+TestRunner.class
+BinarySearch.class
+MathPractice.class
+NumbersIntro.class
+out
