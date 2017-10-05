@@ -3,6 +3,7 @@ package interviewBit.Numbers;
 import trees.*;
 
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -13,10 +14,9 @@ public class TreesPractice {
     public static void main(String[] args){
         int[] list1 = new int[]{4,2,6,1,3,5,7};
         int[] list2 = new int[]{10,5,15,12,16,13};
-        BalancedBinaryTree sample1 = new BalancedBinaryTree(list1);
+        //BalancedBinaryTree sample1 = new BalancedBinaryTree(list1);
         BalancedBinaryTree sample2 = new BalancedBinaryTree(list2);
-        System.out.println(maxDepth(sample2.root));
-
+        System.out.println(minHeight(sample2.root));
     }
 
     /*-------------------------------------------------Compare two trees-----------------------------------------------------------------*/
@@ -285,6 +285,34 @@ public class TreesPractice {
                 return (rDepth + 1);
         }
     }
+
+
+    // minimum depth of the tree
+    /*Here i am going level by level and check for leaf node. If I find one i add up the level +1 and return*/
+    public static int minHeight(TreeNode root){
+        int level = 0;
+        ArrayList<TreeNode> level_list = new ArrayList<>();
+        ArrayList<TreeNode> next_level_list = new ArrayList<>();
+        if(root.left == null && root.right == null) {
+            return 1;
+        }
+        level_list.add(root);
+
+        while (!level_list.isEmpty()){
+            for (TreeNode node: level_list) {
+                if(node.left == null && node.right == null) return level +1;
+                else {
+                    if (node.left != null) next_level_list.add(node.left);
+                    if (node.right != null) next_level_list.add(node.right);
+                }
+            }
+            level_list = (ArrayList<TreeNode>) next_level_list.clone();
+            next_level_list.clear();
+            level++;
+        }
+        return level +1;
+    }
+
 
 
 }
