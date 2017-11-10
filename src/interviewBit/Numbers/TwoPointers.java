@@ -1,5 +1,6 @@
 package interviewBit.Numbers;
 
+import javax.lang.model.type.NullType;
 import java.util.*;
 
 /**
@@ -7,19 +8,148 @@ import java.util.*;
  */
 public class TwoPointers{
     public static void main(String [] args){
-        Integer[] list1 = {-5, 1, 4, -7, 10, -7, 0, 7, 3, 0, -2, -5, -3, -6, 4, -7, -8, 0, 4, 9, 4, 1, -8, -6, -6, 0, -9, 5, 3, -9, -5, -9, 6, 3, 8, -10, 1, -2, 2, 1, -9, 2, -3, 9, 9, -10, 0, -9, -2, 7, 0, -4, -3, 1, 6, -3};
-        //Integer[] list2 = {-4,-3,-2,-2};
-        ArrayList<Integer> a_list1 = new ArrayList<>();
-        //ArrayList<Integer> a_list2 = new ArrayList<>();
-        for (Integer i: list1) {
-            a_list1.add(i);
-        }
-//        for (Integer i: list2) {
-//            a_list2.add(i);
-//        }
-
-        System.out.println(threeSumClosest(a_list1,-1));
+        int[] list1 = {1, 3, 2, 8, 4, 9};
+        System.out.println(maxProfit(list1,2));
+        //System.out.println(maxConsecutiveOnes(list1));
     }
+
+
+    public static int maxProfit(int[] prices, int fee) {
+        int size = prices.length;
+        int[][] profit = new int[size][size];
+        for (int i = 0; i < size ; i++) {
+            if(i != 0){
+                int max = 0;
+                for (int j = 0; j < i ; j++) {
+                    if(max < profit[j][i-1]) {
+                        max = profit[j][i-1];
+                    }
+                }
+                if(i == size-1){
+                    for (int j = 0; j < i ; j++) {
+                        if(max < profit[j][i]) {
+                            max = profit[j][i];
+                        }
+                    }
+                }
+                profit[i][i] = max;
+            }
+            for (int j = i+1; j < size ; j++) {
+                if(i == 0){
+                    if((prices[j]-prices[i]-fee) >= profit[i][j-1]){
+                        profit[i][j] = prices[j]-prices[i]-fee;
+                    }else{
+                        profit[i][j] = profit[i][j-1];
+                    }
+                }else{
+                    if(prices[j]- prices[i]- fee + profit[i][i] >= profit[i][j-1]){
+                        profit[i][j] = prices[j]-prices[i]-fee + profit[i][i];
+                    }else{
+                        profit[i][j] = profit[i][j-1];
+                    }
+                }
+            }
+        }
+        return profit[size-1][size-1];
+    }
+
+
+    /* Finding the paths with blocks as 1 or 0*/
+
+    public int uniquePathsWithObstacles(ArrayList<ArrayList<Integer>> a) {
+        int m = a.size();
+        if(m == 0) return 0;
+        int n = a.get(0).size();
+        int [][] result= new int[m][n];
+        if(m == 1 && n == 1){
+            if(a.get(0).get(0) == 0){
+                return 1;
+            }else {
+                return 0;
+            }
+        }
+        result[0][0] = 1;
+        for(int i = 1; i < m; i ++){
+            for(int j = 1; j < n; j ++){
+                if(i == 0 && j != 0 ){
+                    if(a.get(i).get(j-1) == 0){
+                        result[i][j] = 1;
+                    }
+                }else if(i != 0 && j == 0){
+                    if(a.get(i-1).get(j-1) == 0){
+                        result[i][j] = 1;
+                    }
+                }else{
+                    if(a.get(i-1).get(j) == 0 && a.get(i).get(j-1) == 0){
+                        result[i][j] = result[i-1][j] + result[i][j-1];
+                    }else if(a.get(i-1).get(j) == 0){
+                        result[i][j] = result[i-1][j];
+                    }else if(a.get(i).get(j-1) == 0){
+                        result[i][j] = result[i][j-1];
+                    }else{
+                        result[i][j] = 0;
+                    }
+                }
+            }
+        }
+        return result[m-1][n-1];
+    }
+
+    public static boolean checkInclusion(String s1, String s2) {
+        boolean result=false;
+        int length = s1.length();
+        //Set<String> all_perm= new HashSet<>();
+        //permute(s1,0 , length-1,all_perm);
+        for (int i = 0; i < s2.length() - length +1 ; i++) {
+            if (s1.indexOf(s2.charAt(i)) != -1) {
+                /*if(all_perm.contains(s2.substring(i,i+length))){
+                    result = true;
+                    break;
+                }*/
+                StringBuilder d_s1 = new StringBuilder(s1);
+                for (int j = i; j < i +length ; j++) {
+                    int indx = d_s1.toString().indexOf(s2.charAt(j));
+                    if(indx != -1){
+                        d_s1.deleteCharAt(indx);
+                    }else{
+                        break;
+                    }
+                }
+                if(d_s1.length() == 0){
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    public static String swap(String a, int i, int j)
+    {
+        char temp;
+        char[] charArray = a.toCharArray();
+        temp = charArray[i] ;
+        charArray[i] = charArray[j];
+        charArray[j] = temp;
+        return String.valueOf(charArray);
+    }
+
+    private static void permute(String str, int l, int r, Set<String> result)
+    {
+        if (l == r) result.add(str);
+        else
+        {
+            for (int i = l; i <= r; i++)
+            {
+                str = swap(str,l,i);
+                permute(str, l+1, r,result);
+                str = swap(str,l,i);
+            }
+        }
+    }
+
+
+/*CLosest three sum */
 
     public static int threeSumClosest(ArrayList<Integer> a, int b) {
         Collections.sort(a);
@@ -308,5 +438,137 @@ public class TwoPointers{
     }
 
     /*--------------------------------------------------------------------------------------------------------------------------------*/
+    public static int maxArea(int[] height) {
+        int low = 0;
+        int high = height.length -1;
+        int capacity = 0;
+        while(low < high){
+            int h = Math.min(height[low],height[high]);
+            capacity = Math.max(capacity,h*(high-low));
+            while(height[low]<= h && low < high) low ++;
+            while(height[high]<= h && low < high) high --;
+        }
+        return capacity;
+    }
+
+
+    /*public static boolean checkInclusion(String s1, String s2) {
+        boolean result = false;
+        int size = s1.length();
+        if(s1.length() > s2.length()) return false;
+        for (int i = 0; i < s2.length()-size ; i++) {
+            if(s1.contains(Character.toString(s2.charAt(i)))){
+                String sub = s2.substring(i+1,i+size);
+                System.out.println(sub);
+                int count = 1;
+                for (int j = 1; j < sub.length() ; j++) {
+                    if(!s1.contains(Character.toString(sub.charAt(j)))){
+                        i = i+count;
+                        break;
+                    }else{
+                        count  ++;
+                    }
+                }
+                if(count == sub.length()+1){
+                    return true;
+                }
+            }
+        }
+        return result;
+    }*/
+
+    /* If the numbers in the arrays are heights, find the maximum capacity of water that that structure formed can hold.*/
+    public static int trap(int[] height) {
+        int result = 0;
+        int peak = 0;
+        int left = 0, right= 1;
+        int sum = 0;
+        int max_capacity = 0;
+        while (right < height.length) {
+            if (height[right] < height[left]) {
+                sum += height[right];
+            } else {
+                max_capacity = (right - left-1) * height[left];
+                result += max_capacity - sum;
+                sum = 0;
+                left = right;
+                peak = right;
+            }
+            right++;
+        }
+        if(peak != right-1){
+            int max_peak = peak;
+            right = right -1;
+            sum = 0;
+            peak = right;
+            for (int i = height.length-2; i >= max_peak ; i--) {
+                if (height[i] < height[right]) {
+                    sum += height[i];
+                } else {
+                    max_capacity = (right-i-1) * height[right];
+                    result += max_capacity - sum;
+                    sum = 0;
+                    right = i;
+                    peak = right;
+                }
+
+
+            }
+        }
+
+        return result;
+
+
+    }
+
+    /* Given an array of 1's and 0's, you are allowed to flip one zero. Find the maximum number of consecutive 1's */
+
+
+    public static int maxConsecutiveOnes(int[] list){
+        int result = 0;
+        int size = list.length;
+        if(size == 1){
+            return 1;
+        }
+        int prev_end = 0;
+        int prev_length = 0;
+        boolean included = false;
+        for (int low = 0; low < size; low++) {
+            included = false;
+            if(list[low] == 1){
+                int high = low + 1;
+                int sub_len = 1;
+                while (high < size && list[high] == 1){
+                    sub_len ++;
+                    high ++;
+                }
+
+                if(sub_len + 1 <= size) sub_len ++;
+
+                if(low - prev_end == 2){
+                    sub_len = prev_length + sub_len;
+                    included = true;
+                }
+
+                if(sub_len > result){
+                    result = sub_len;
+                }
+
+                low = high -1;
+                prev_end = low;
+                if(!included){
+                    prev_length = sub_len-1;
+                }else{
+                    prev_length = sub_len - prev_length -1;
+                }
+            }
+        }
+        // this is for the case where all the elements int he list are zeroes
+        if(result == 0){
+            result = 1;
+        }
+
+        return result;
+    }
 
 }

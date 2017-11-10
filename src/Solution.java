@@ -15,6 +15,8 @@ public class Solution {
     }
 
 
+
+
     public static int repeatedNumber(final List<Integer> a) {
         Collections.sort(a);
         int dnum = -1;

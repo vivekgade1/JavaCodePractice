@@ -2,9 +2,7 @@ package interviewBit.Numbers;
 
 import trees.*;
 
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Created by vgade on 8/9/17.
@@ -13,10 +11,11 @@ public class TreesPractice {
 
     public static void main(String[] args){
         int[] list1 = new int[]{4,2,6,1,3,5,7};
-        int[] list2 = new int[]{10,5,15,12,16,13};
+        int[] list2 = new int[]{10,5,15,12,16,13,3,2,4};
         //BalancedBinaryTree sample1 = new BalancedBinaryTree(list1);
         BalancedBinaryTree sample2 = new BalancedBinaryTree(list2);
-        System.out.println(minHeight(sample2.root));
+        //System.out.println(rightView(sample2.root));
+        rightView(sample2.root);
     }
 
     /*-------------------------------------------------Compare two trees-----------------------------------------------------------------*/
@@ -313,6 +312,40 @@ public class TreesPractice {
         return level +1;
     }
 
+    /**/
+    public static void rightView(TreeNode root){
+        Queue<TreeNode> level_nodes = new LinkedList<>();
+        ArrayList<Integer> result = new ArrayList<>();
+        level_nodes.add(root);
+        int count = 1;
+        int level = 0;
+        TreeNode ele = null;
+        while (!level_nodes.isEmpty()){
+            level = 0;
+            while (count != 0) {
+                ele = level_nodes.remove();
+                count--;
+                if(count == 0){
+                    result.add(ele.val);
+                }
+
+                if (ele.left != null) {
+                    level_nodes.add(ele.left);
+                    level++;
+                }
+
+                if (ele.right != null){
+                    level_nodes.add(ele.right);
+                    level++;
+                }
+
+            }
+            count = level_nodes.size();
+        }
+
+        System.out.println(result);
+
+    }
 
 
 }

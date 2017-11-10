@@ -262,8 +262,6 @@ public class BinarySearch {
         }else{
             return findLastIndex(a, low,mid-1, num);
         }
-
-
     }
 
     /*------------------------ end of the occurrences sum ------------------------*/

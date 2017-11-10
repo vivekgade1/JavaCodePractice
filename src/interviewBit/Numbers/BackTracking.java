@@ -1,11 +1,149 @@
 package interviewBit.Numbers;
 
-import java.util.Stack;
+import java.util.*;
 
 public class BackTracking {
     public static void main(String[] args){
-        int[] a = {1,1,6,4,1};
-        System.out.println(lPalin(createLinkedList(a)));
+        int[] a = { 15, 8, 15, 10, 19, 18, 10, 3, 11, 7, 17};
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i: a) {
+            list.add(i);
+        }
+
+        System.out.println(combinationSum(list,33));
+    }
+
+
+    private static int numSetBits(long a) {
+        long remainder = a;
+        int ones = 0;
+        while (remainder>2){
+            int r = (int) (remainder%2);
+            if(r == 1){
+                ones++;
+            }
+            remainder = remainder/2;
+        }
+        if(remainder ==1) ones++;
+        return ones;
+
+    }
+
+    public static ArrayList<ArrayList<Integer>> combinationSum(ArrayList<Integer> a, int b) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        ArrayList<Integer> list = new ArrayList<>();
+        Collections.sort(a);
+        ArrayList<ArrayList<Integer>> sub_result = new ArrayList<>();
+        ArrayList<Integer> valid = new ArrayList<>();
+        int count = 0;
+        for (int i = 0; i < a.size();i++) {
+            int ele = a.get(i);
+            if(i!=0  && ele == a.get(i-1)) {
+                continue;
+            }
+            if(ele <= b){
+                valid.clear();
+                valid.add(ele);
+                list.add(ele);
+                result.add((ArrayList<Integer>) valid.clone());
+                if(ele == b) count++;
+            }else if(ele > b){
+                break;
+            }
+        }
+
+        while (count != result.size()|| result.size() ==0){
+            count = 0;
+            sub_result.clear();
+            for (ArrayList arr: result) {
+                int last_indx = list.indexOf(arr.get(arr.size()-1));
+                int sum = getSum(arr);
+                if(sum < b){
+                    for (int j = last_indx; j < list.size() ; j++) {
+                        valid.clear();
+                        int ele = list.get(j);
+                        if(sum + ele <= b){
+                            valid.addAll(arr);
+                            valid.add(ele);
+                            sub_result.add((ArrayList<Integer>) valid.clone());
+                            if(sum + ele == b) break;
+                        }else{
+                            break;
+                        }
+                    }
+                }else if(sum == b){
+                    sub_result.add(arr);
+                    count++;
+                }
+            }
+
+            if(sub_result.size() > 0){
+                result = (ArrayList<ArrayList<Integer>>) sub_result.clone();
+            }else{
+                result.clear();
+                break;
+            }
+        }
+
+
+        return result;
+    }
+
+    private static int getSum(ArrayList<Integer> arr) {
+        int total = 0;
+        for (int item : arr) {
+            total += item;
+        }
+        return total;
+    }
+
+    /*
+    * Combinations possible of certain size
+    * */
+    public static ArrayList<ArrayList<Integer>> combine(int n, int k) {
+        ArrayList<Integer> list = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        if(n < k ) return result;
+        for (int i = 1; i <=n; i++) {
+            ArrayList<Integer> sub_arr = new ArrayList<Integer>();
+            sub_arr.add(i);
+            result.add(sub_arr);
+            list.add(i);
+        }
+        int count = 1;
+        
+        while (count <k){
+            ArrayList<ArrayList<Integer>> sub_result = new ArrayList<>();
+            for (ArrayList arr: result) {
+                int last_num = (int) arr.get(arr.size()-1);
+                for (int i = last_num; i < n ; i++) {
+                    ArrayList<Integer> sub_arr = new ArrayList<>(arr);
+                    sub_arr.add(list.get(i));
+                    sub_result.add(sub_arr);
+                }
+            }
+            result = sub_result;
+            count++;
+        }
+        return result;
+    }
+
+    /* Sub sets */
+    public static ArrayList<ArrayList<Integer>> subsets(ArrayList<Integer> a) {
+        Collections.sort(a);
+
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        result.add(new ArrayList<>());
+        for(int item :a){
+            ArrayList<ArrayList<Integer>> interm_list = new ArrayList<>();
+            for (int i = 0; i < result.size(); i++) {
+                ArrayList prev_list = new ArrayList<>(result.get(i));
+                prev_list.add(item);
+                interm_list.add(prev_list);
+            }
+            result.addAll(interm_list);
+        }
+        return result;
     }
 
     /*-----------------------------------------------Palindrome list--------------------------------------------------------------------*/
