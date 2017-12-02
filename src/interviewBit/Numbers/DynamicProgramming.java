@@ -1,5 +1,6 @@
 package interviewBit.Numbers;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -26,7 +27,31 @@ public class DynamicProgramming {
 
         //System.out.println(minDistance("ba","aa"));
         //System.out.println(maxSubArray(array));
-        System.out.println(longestCommonSubsequence("AGGTAB","GXTXAGYTGAB"));
+        //System.out.println(longestCommonSubsequence("AGGTAB","GXTXAGYTGAB"));
+
+    }
+
+
+
+    public static int minimumTotal(ArrayList<ArrayList<Integer>> a) {
+        int[][] result = new int[a.size()][a.size()];
+        result[0][0] = a.get(0).get(0);
+        for (int i = 1; i < a.size(); i++) {
+            ArrayList arr = a.get(i);
+            for (int j = 0; j < arr.size(); j++) {
+                if(j == 0){
+                    result[i][j] = result[i-1][j] + (int)arr.get(j);
+                }else if(j == arr.size()-1){
+                    result[i][j] = result[i-1][j-1] + (int)arr.get(j);
+                }else{
+                    result[i][j] = Math.min(result[i-1][j] + (int)arr.get(j),result[i-1][j-1] + (int)arr.get(j));
+                }
+
+            }
+        }
+        Arrays.sort(result[a.size()-1]);
+        return result[a.size()-1][0];
+
     }
 
     public static int maxSubArray(int[] nums) {

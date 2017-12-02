@@ -232,7 +232,7 @@ public class TreesPractice {
         if(a == null) return 1;
         int left_depth = checkDepth(a.left);
         int right_depth = checkDepth(a.right);
-        if(left_depth == right_depth){
+        if(Math.abs((left_depth-right_depth)) <=1 && isBalanced(a.left)==1 && isBalanced(a.right) == 1){
             return 1;
         }else {
             return 0;
