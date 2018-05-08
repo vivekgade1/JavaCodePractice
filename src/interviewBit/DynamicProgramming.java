@@ -1,4 +1,4 @@
-package interviewBit.Numbers;
+package interviewBit;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -6,31 +6,206 @@ import java.util.*;
 
 public class DynamicProgramming {
     public static void main(String[] args){
+//        int [] array = {69, 54, 19, 51, 16, 54, 64, 89, 72, 40, 31, 43, 1, 11, 82, 65, 75, 67, 25, 98, 31, 77, 55, 88, 85, 76, 35, 101, 44, 74, 29, 94, 72, 39, 20, 24, 23, 66, 16, 95, 5, 17, 54, 89, 93, 10, 7, 88, 68, 10, 11, 22, 25, 50, 18, 59, 79, 87, 7, 49, 26, 96, 27, 19, 67, 35, 50, 10, 6, 48, 38, 28, 66, 94, 60, 27, 76, 4, 43, 66, 14, 8, 78, 72, 21, 56, 34, 90, 89};
+//        ArrayList<Integer> list = new ArrayList<>();
+//        for (int i: array) {
+//            list.add(i);
+//        }
+
+//        int[][] arr2d = {
+//                {-8,5, 7},
+//                {3,7,-8},
+//                {5,-8, 9}
+//        };
+
+        //int[] input = {0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15};
+        System.out.println(longestCommonSubsequenceDP("vivek","dfkvijs"));
+    }
+
+    /* Start of Tesla Test*/
 
 
-        int [] array = {-2,1,-3,4,-1,2,1,-5,4};
-        ArrayList<Integer> list = new ArrayList<>();
-        for (int i: array) {
-            list.add(i);
+
+    public static int solution(int[] A) {
+        // write your code in Java SE 8
+        HashMap<Integer,Integer> map = new HashMap<>();
+        int result = Integer.MAX_VALUE;
+        // Initialization of map
+        for (int i = 1; i <=6 ; i++) {
+            map.put(i,0);
+        }
+        // Number of elements
+        for (int i = 0; i < A.length ; i++) {
+            map.put(A[i],map.get(A[i])+1);
         }
 
-        /*int[][] arr2d = {
-                {20, 29, 84, 4, 32, 60, 86, 8, 7, 37},
-                {77, 69, 85, 83, 81, 78, 22, 45, 43, 63},
-                {60, 21, 0, 94, 59, 88, 9, 54, 30, 80},
-                {40, 78, 52, 58, 26, 84, 47, 0, 24, 60},
-                {40, 17, 69, 5, 38, 5, 75, 59, 35, 26},
-                {64, 41, 85, 22, 44, 25, 3, 63, 33, 13},
-                {2, 21, 39, 51, 75, 70, 76, 57, 56, 22},
-                {31, 45, 47, 100, 65, 10, 94, 96, 81, 14}
-        };*/
+        for (int i = 1; i <= 6 ; i++) {
+            int count = 0;
+            for (int j = 1; j <=6 ; j++) {
+                if(i!=j){
+                    if(i+j == 7){
+                        count += (map.get(j)*2);
+                    }else {
+                        count += map.get(j);
+                    }
+                }
+            }
+            if(count<result) result = count;
+        }
 
-        //System.out.println(minDistance("ba","aa"));
-        //System.out.println(maxSubArray(array));
-        //System.out.println(longestCommonSubsequence("AGGTAB","GXTXAGYTGAB"));
+        return result;
+    }
+
+    public static int giraffe(int[] arr){
+        int size = arr.length;
+        int max = -1,count =0;
+        Stack<Integer> giff = new Stack<>();
+        for(int i=0;i<size;i++)
+        {
+            if(arr[i] > max)
+            {
+                giff.push(arr[i]);
+                count++;
+                max = arr[i];
+            }
+            else if(arr[i] < giff.peek())
+            {
+                while(arr[i] < giff.peek())
+                {
+                    giff.pop();
+                    count--;
+                    if(giff.empty()) break;
+                }
+                giff.push(arr[i]);
+                count++;
+            }
+
+        }
+        return count;
+    }
+    /* End of Tesla test*/
+
+    public int solve(ArrayList<ArrayList<Integer>> A) {
+        int row = A.size();
+        if(row == 0) return 0;
+        int col = A.get(0).size();
+        int[][] mat = new int[row][col];
+        int count = 0;
+        mat[0][0] = A.get(0).get(0);
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col ; j++) {
+                if(i==0 && j == 0) continue;
+                if(i == 0){
+                    mat[i][j] = A.get(i).get(j) + mat[i][j-1];
+                }else if(j == 0){
+                    mat[i][j] = mat[i-1][j] + A.get(i).get(j);
+                }else{
+                    mat[i][j] = A.get(i).get(j) + mat[i][j-1] + mat[i-1][j];
+                }
+
+                if(mat[i][j] == 0) count++;
+            }
+        }
+        return count;
 
     }
 
+
+
+    public static int lis(final List<Integer> A) {
+        int[]mat = new int [A.size()];
+        Arrays.fill(mat, 1);
+        if(A.size() == 0){
+            return 0; // if the list is empty
+        }
+        int result = Integer.MIN_VALUE;
+        for(int i = 0; i < A.size(); i++){
+            for (int j = 0; j <i ; j++) {
+                if(A.get(j)< A.get(i) && mat[i] < mat[j]+1) {
+                    mat[i] = mat[j] + 1;
+                }
+            }
+            if(result < mat[i]) result = mat[i];
+        }
+
+        return result;
+    }
+
+
+    /* Chords of a circle*/
+    public static int chordCnt(int A) {
+        int n_point = 2*A;
+        int result= 0;
+        HashMap<Integer,Integer> chords_map = new HashMap<>();
+        chords_map.put(2,1);
+        int start = 1;
+        int left_half = 0;
+        int right_half = 0;
+
+        for (int i = 4; i <= n_point ; i=i+2) {
+            result = 0;
+            int j = 2;
+            for (; j < (i/2)+1; j=j+2) { // Initial point is one.
+                right_half = j - start -1;
+                left_half = i-j;
+                if(right_half >= 4){
+                    result = (result%1000000007 + ((chords_map.get(left_half)%1000000007)*(chords_map.get(right_half)%1000000007)))%1000000007;
+                }else{
+                    result = (result%1000000007 + (chords_map.get(left_half)%1000000007))%1000000007;
+                }
+            }
+            result = (result%1000000007 + (result%1000000007))%1000000007;
+
+            if(j == (i/2)+1){
+                result = (result%1000000007 + ((chords_map.get(j-2)%1000000007)*(chords_map.get(j-2)%1000000007)))%1000000007;
+            }
+            chords_map.put(i,result%1000000007);
+        }
+        return (chords_map.get(n_point));
+    }
+
+    /* forming the circle- circular tour problem.*/
+    public static int circularTour(int n, String input){
+        String[] details = input.split(" ");
+        int[] distance = new int[n+1];
+        int[] petrol = new int[n+1];
+        int[][] distance_matrix = new int[n+1][n+1];
+        int[][] fuel_matrix = new int[n+1][n+1];
+        for (int i = 0; i < 2*n ; i++) {
+            if(i%2 == 0){
+                petrol[(i/2) +1] = Integer.parseInt(details[i]);
+            }else{
+                distance[(i+1)/2] = Integer.parseInt(details[i]);
+            }
+        }
+
+        buildMatrix(distance_matrix,distance, n);
+        buildMatrix(fuel_matrix,petrol,n);
+
+        for (int i = 1; i < n+1; i++) {
+            for (int j = 1; j < n+1 ; j++) {
+                fuel_matrix[i][j] = fuel_matrix[i][j]-distance_matrix[i][j];
+            }
+        }
+        for (int i = 1; i < n+1; i++) {
+            int prev = i == 1 ? n : i-1;
+            int next = i == n ? 1 : i +1;
+            if(fuel_matrix[prev][i] - distance[prev] >=0 || fuel_matrix[next][i]-distance[i]>=0){
+                return 1;
+            }
+        }
+        return -1;
+    }
+
+    private static void buildMatrix(int[][] matrix, int[] input, int size) {
+        for (int i = 1; i < matrix.length ; i++) {
+            for( int j = i+1; j > i && (j % size != i%size) ; j ++){
+                int prev = (j-1)%size==0? size :(j-1)%size;
+                int present = j%size ==0 ? size : j%size;
+                matrix[i][present] = matrix[i][prev] + input[prev];
+            }
+        }
+    }
 
 
     public static int minimumTotal(ArrayList<ArrayList<Integer>> a) {
@@ -74,7 +249,7 @@ public class DynamicProgramming {
 
     }
 
-    public static int anytwo(String a) {
+    /*public static int anytwo(String a) {
         HashMap<String, Integer> prev_str = new HashMap<>();
         int result = 0;
         int size = a.length();
@@ -94,7 +269,34 @@ public class DynamicProgramming {
             }
         }
         return  result;
+    }*/
+
+    public static int anytwo(String a) {
+        int result = 0;
+        HashSet<String> occurrences = new HashSet<>();
+        result = subSequence(a, 0, 2,occurrences ,result);
+        return result;
     }
+
+    private static int subSequence(String a, int left, int size,HashSet occurrences,int result) {
+        if(size == a.length()){
+            return 0;
+        }
+        if(left + size > a.length()){
+            size = size + 1;
+            left = 0;
+        }else if(left + size <= a.length()){
+            String str = a.substring(left,left + size);
+            if(occurrences.contains(str)){
+                return 1;
+            }else{
+                occurrences.add(str);
+            }
+            left = left + 1;
+        }
+        return subSequence(a, left,size,occurrences,result);
+    }
+
 
     public static int maxProfit(final List<Integer> a) {
         int size = a.size();
@@ -380,6 +582,26 @@ public class DynamicProgramming {
             }
         }
         System.out.println(seq.toString());
+        return result;
+    }
+    public static int longestCommonSubsequenceDP(String a, String b){
+        int size_a = a.length();
+        int size_b = b.length();
+        int result = 0;
+        int[][] dp_matrix = new int[size_a][size_b];
+        for (int i = 0; i < size_a; i++) {
+            for (int j = i; j < size_b; j++) {
+                if(a.charAt(i) == b.charAt(j)){
+                    if(i == 0 ){
+                        dp_matrix[i][j] = 1;
+                    }else{
+                        dp_matrix[i][j] = dp_matrix[i-1][j-1] + 1;
+                    }
+                }
+                if(result < dp_matrix[i][j]) result = dp_matrix[i][j];
+            }
+        }
+
         return result;
     }
 

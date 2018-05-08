@@ -1,4 +1,4 @@
-package interviewBit.Numbers;
+package interviewBit;
 
 public class ListNode {
     public int val;

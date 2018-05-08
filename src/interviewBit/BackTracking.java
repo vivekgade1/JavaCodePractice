@@ -1,18 +1,45 @@
-package interviewBit.Numbers;
+package interviewBit;
 
 import java.util.*;
 
 public class BackTracking {
     public static void main(String[] args){
-        int[] a = { 15, 8, 15, 10, 19, 18, 10, 3, 11, 7, 17};
+        int[] a = { 1,2,3,4};
         ArrayList<Integer> list = new ArrayList<>();
         for (int i: a) {
             list.add(i);
         }
 
-        System.out.println(combinationSum(list,33));
+        formParanthesis(3);
     }
 
+
+    // All permutations.
+    public static int[][] permute(int[] nums) {
+        int size = nums.length;
+        int[][]result = new int[size][size];
+        ArrayList<ArrayList<Integer>> orders = new ArrayList<>();
+
+        numPermutation(nums,orders,new ArrayList<Integer>());
+        return result;
+    }
+
+    private static void numPermutation(int[] nums, ArrayList<ArrayList<Integer>> orders,ArrayList current) {
+
+        if(current.size() == nums.length){
+            if(!orders.contains(current))
+                orders.add(new ArrayList<Integer>(current));
+
+            return;
+        }
+        for (int j = 0; j < nums.length ; j++) {
+            if(current.contains(nums[j])) continue;
+            current.add(nums[j]);
+            numPermutation(nums,orders,current);
+            current.remove(current.size()-1);
+        }
+
+    }
 
     private static int numSetBits(long a) {
         long remainder = a;
@@ -129,7 +156,7 @@ public class BackTracking {
     }
 
     /* Sub sets */
-    public static ArrayList<ArrayList<Integer>> subsets(ArrayList<Integer> a) {
+    public static ArrayList<ArrayList<Integer>> subsetsNormal(ArrayList<Integer> a) {
         Collections.sort(a);
 
         ArrayList<ArrayList<Integer>> result = new ArrayList<>();
@@ -145,6 +172,29 @@ public class BackTracking {
         }
         return result;
     }
+    // Editorial solution for subsets lexical
+    public ArrayList<ArrayList<Integer>> subsets(ArrayList<Integer> a) {
+        ArrayList<ArrayList<Integer>> output = new ArrayList<ArrayList<Integer>>();
+        output.add(new ArrayList<Integer>());
+        if (a.size() == 0)
+            return output;
+        Collections.sort(a);
+        generate(a, output, new ArrayList<Integer>(), 0);
+        return output;
+    }
+
+    public void generate(ArrayList<Integer> a, ArrayList<ArrayList<Integer>> output, ArrayList<Integer> temp, int index)
+    {
+        for (int i = index; i < a.size(); i++)
+        {
+            temp.add(a.get(i));
+            output.add(new ArrayList<Integer>(temp));
+            generate(a, output, temp, i+1);
+            temp.remove(temp.size() - 1);
+        }
+    }
+
+
 
     /*-----------------------------------------------Palindrome list--------------------------------------------------------------------*/
     public static int lPalin(ListNode A) {
@@ -236,4 +286,90 @@ public class BackTracking {
         }
         return head;
     }
+
+    public static String[] letterCombinations(String A) {
+        HashMap<String,String> tele_map = new HashMap<>();
+        tele_map.put("1","1");
+        tele_map.put("0","0");
+        tele_map.put("2","abc");
+        tele_map.put("3","def");
+        tele_map.put("4","ghi");
+        tele_map.put("5","jkl");
+        tele_map.put("6","mno");
+        tele_map.put("7","pqrs");
+        tele_map.put("8","tuv");
+        tele_map.put("9","wxyz");
+        ArrayList<String>output = new ArrayList<>();
+        int size = A.length();
+
+        ArrayList<String> mapping = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            mapping.add(tele_map.get(A.substring(i,i+1)));
+        }
+        StringBuilder temp = new StringBuilder();
+        getPermutations(output,mapping,temp,size,0);
+
+        String[] result = new String[output.size()];
+        for (int i = 0; i < result.length ; i++) {
+            result[i] = output.get(i);
+        }
+        return  result;
+    }
+
+    private static void getPermutations(ArrayList<String> output, ArrayList<String> mapping, StringBuilder temp,int size, int indx) {
+        String num_str = mapping.get(indx);
+        if(indx < size){
+            for (int i = 0; i < num_str.length(); i++) {
+                temp.append(num_str.charAt(i));
+                if(indx != size -1){
+                    getPermutations(output,mapping,temp,size,indx+1);
+                }
+                if(temp.length() == size){
+                    output.add(temp.toString());
+                }
+                temp.deleteCharAt(temp.length()-1);
+            }
+        }
+    }
+
+    /* Generate all the Paranthesis.*/
+    private static void formParanthesis(int n){
+        String[] brackets = new String[]{"(",")"};
+        List<String> output = new ArrayList<>();
+        getValidParams(output,n,0,0,new StringBuilder(),brackets);
+
+        String[] result = new String[output.size()];
+        for (int i = 0; i < output.size(); i++) {
+            result[i] = output.get(i);
+        }
+        System.out.println(output.toString());
+
+    }
+
+    private static void getValidParams(List<String> output, int n, int left,int right,StringBuilder inter_str,String[] brackets) {
+
+        if(left == right && left == n){
+            output.add(inter_str.toString());
+        }else{
+            if(left == right && left < n){
+                inter_str.append(brackets[0]);
+                getValidParams(output,n,left +1, right, inter_str,brackets);
+            }else if(left > right && left < n){
+                inter_str.append(brackets[0]);
+                //String cur_str = inter_str.toString();
+                String cur_str = inter_str.toString();
+                getValidParams(output,n,left +1, right, inter_str,brackets);
+                inter_str.setLength(0);
+                inter_str.append(cur_str);
+                inter_str.deleteCharAt(inter_str.length() -1);
+                inter_str.append(brackets[1]);
+                getValidParams(output,n,left, right + 1, inter_str,brackets);
+            }else if(left > right && left == n){
+                inter_str.append(brackets[1]);
+                getValidParams(output,n,left, right + 1, inter_str,brackets);
+            }
+        }
+    }
+
+
 }

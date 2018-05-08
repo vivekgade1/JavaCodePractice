@@ -1,4 +1,4 @@
-package interviewBit.Numbers;
+package interviewBit;
 
 import javax.lang.model.type.NullType;
 import java.util.*;

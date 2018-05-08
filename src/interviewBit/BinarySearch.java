@@ -1,4 +1,4 @@
-package interviewBit.Numbers;
+package interviewBit;
 
 
 import java.util.*;
@@ -10,14 +10,9 @@ public class BinarySearch {
     public static void main(String [] args) {
         int[] list = {1,5,6,7,8};
         int[] list2 = {9,23,30,44,58,72,73,78};
-
         //System.out.println(findMedianSortedArrays(Arrays.asList(list),Arrays.asList(list2)));
 
     }
-
-
-
-
     /*------------------------ Start of Allocate books  ------------------------*/
     public static int books(List<Integer> a, int M) {
         Collections.sort(a);

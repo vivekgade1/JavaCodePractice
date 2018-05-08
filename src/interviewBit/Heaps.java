@@ -1,12 +1,8 @@
-package interviewBit.Numbers;
+package interviewBit;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.TreeMap;
-import interviewBit.Numbers.StringProblems.*;
-import interviewBit.Numbers.ListNode;
 
 public class Heaps {
 

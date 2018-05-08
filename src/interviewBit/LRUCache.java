@@ -1,8 +1,6 @@
-package interviewBit.Numbers;
+package interviewBit;
 
 import java.util.HashMap;
-import java.util.TreeMap;
-import java.util.*;
 
 public class LRUCache {
     public class DNode{

@@ -1,13 +1,12 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Sort {
     public static void main(String[] args){
         int[] list = {4,3,2,1,7,5};
-        int[] result = mergeSort(list);
-        for (int i:result) {
-            System.out.println(i);
-        }
+        quickSort(list);
     }
 
     /* This is similar to arrangement of cards
@@ -68,4 +67,48 @@ public class Sort {
         }
         return final_list;
     }
+
+    /*----
+    * Quick sort. One of the most efficient in place sorting algorithm with divide and conquer paradigm.
+    *  worst case is O(n2) but average case runs in O(nlgn) with right choide of the pivot.
+    * */
+
+    public  static int[] quickSort(int[] input){
+        recursion(input,0,input.length-1);
+        return input;
+    }
+
+    private static void recursion(int[] input, int left, int right) {
+        if(left >= right){
+            return;
+        }
+        int q = partision(input,left,right);
+        recursion(input,left,q-1);
+        recursion(input,q+1,right);
+    }
+
+    private static int partision(int[] input, int left, int right) {
+        int pivot = left;
+        left++;
+        int temp;
+        while (left<=right){
+            if(input[left] < input[pivot]){
+                temp = input[left];
+                input[left] = input[pivot];
+                input[pivot] = temp;
+                pivot = left;
+                left++;
+            }else{
+                temp = input[left];
+                input[left] = input[right];
+                input[right] = temp;
+                right--;
+            }
+        }
+        return pivot;
+    }
+
+
+
+
 }

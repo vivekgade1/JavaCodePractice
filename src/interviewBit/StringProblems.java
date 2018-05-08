@@ -1,4 +1,4 @@
-package interviewBit.Numbers;
+package interviewBit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +11,7 @@ import java.util.List;
 public class StringProblems {
     public static void main(String[] args){
         //String[] list = {"This", "is", "an", "example", "of", "text", "justification."};
-        System.out.println(isNumber("3. "));
+        System.out.println(reverseSentence("I am a good     boy"));
     }
 
     /*------------------------------- Valid Number ---------------------------------------------*/
@@ -117,6 +117,7 @@ public class StringProblems {
     }
 
     /*------------------------------- End of check ip  ---------------------------------------------*/
+
     /*-------------------------------Compare versions ---------------------------------------------*/
     public static int compareVersion(String a, String b) {
         String [] list_a = a.replace(".","-").split("-");
@@ -527,6 +528,18 @@ public class StringProblems {
         }
         reverse_str.append(words.reverse());
         return reverse_str.toString();
+    }
+
+    public static String reverseSentence(String s){
+        String[] list = s.split(" ");
+        StringBuilder result = new StringBuilder();
+        for (int i = list.length -1; i >=0 ; i--) {
+            if(!list[i].equals("")){
+                result.append(list[i].trim());
+                result.append(" ");
+            }
+        }
+        return result.toString();
     }
 
     /*------------------------end of reverse a string by words ------------------------*/

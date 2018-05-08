@@ -1,4 +1,4 @@
-package interviewBit.Numbers;
+package interviewBit;
 
 import com.sun.xml.internal.bind.v2.model.core.MaybeElement;
 

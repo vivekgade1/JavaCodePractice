@@ -1,14 +1,20 @@
 package trees;
 
-import interviewBit.Numbers.StringProblems;
-
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * Created by vgade on 8/3/17.
  */
+
 public class BinaryTreePractice {
+    class Node {
+        Node left, right;
+        int data;
+        Node(int newData) {
+            left = right = null;
+            data = newData;
+        }
+    }
     public static void main(String[] args){
         int[] list = {9,4,3,2,45,10,10,1,17};
         BalancedBinaryTree sample = new BalancedBinaryTree(list);
@@ -16,6 +22,26 @@ public class BinaryTreePractice {
         System.out.println("-------------creation for the tree complete---------------");
         System.out.println(sumNumbers(sample.root));
 
+
+    }
+
+
+    private static int isPresent(Node root, int val){
+        int result = 0;
+        Node ele = root;
+        while(ele != null){
+            if(ele.data == val){
+                result = 1;
+                break;
+            }
+            if(ele.data < val){
+                ele = ele.right;
+            }else{
+                ele = ele.left;
+            }
+        }
+
+        return result;
 
     }
 
