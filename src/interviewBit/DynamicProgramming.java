@@ -19,7 +19,27 @@ public class DynamicProgramming {
 //        };
 
         //int[] input = {0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15};
-        System.out.println(longestCommonSubsequenceDP("vivek","dfkvijs"));
+        System.out.println(fibonnacciSeriesMDP(10));
+    }
+    // with recursion and will have O(n)
+    public static int fibonnacciSeries(int n){
+            if (n <= 1)
+                return n;
+            return fibonnacciSeries(n-2)+ fibonnacciSeries(n-1);
+
+    }
+    // matrix DP
+    public static int fibonnacciSeriesMDP(int n){
+        int[] dp = new int[n];
+        if(n == 1) return 0;
+        if(n == 2) return 1;
+        dp[0] = 0; dp[1] = 1;
+        for (int i = 2; i < n ; i++) {
+            dp[i] = dp[i-1] + dp[i-2];
+        }
+
+        return dp[n-1];
+
     }
 
     /* Start of Tesla Test*/

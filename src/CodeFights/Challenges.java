@@ -1,12 +1,12 @@
 package CodeFights;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 public class Challenges {
     public static void main(String[] args){
-        System.out.println(cheapMarquee("Come get your Pan Galactic Gargle Blaster... at The Restaurant at the end of the universe!!",42));
+        System.out.println(alphanumericLess("ab","a1"));
     }
     static int cheapMarquee(String message, int width) {
         HashMap<String,int[]> alpha_map = new HashMap<>();
@@ -23,7 +23,6 @@ public class Challenges {
                 }
                 if(i != message_arr.size()-1)message_arr.add(0);
             }
-
         }
 
 
@@ -96,5 +95,62 @@ public class Challenges {
         alpha_map.put(" ",new int[]{0,0});
 
     }
+    /* Alphanumerically less*/
+
+    static boolean alphanumericLess(String s1, String s2) {
+        String[] s_1_tokens = getToken(s1);
+        String[] s_2_tokens = getToken(s2);
+        String alphabets = "abcdefghijklmnopqrstuvwxyz";
+        int s1_size = s_1_tokens.length, s1_indx = 0;
+        int s2_size = s_2_tokens.length, s2_indx = 0;
+
+        while (s1_indx < s1_size && s2_indx < s2_size){
+            if(!Character.isDigit(s_1_tokens[s1_indx].charAt(0)) && !Character.isDigit(s_2_tokens[s2_indx].charAt(0))){
+                if(alphabets.indexOf(s_1_tokens[s1_indx]) <= alphabets.indexOf(s_2_tokens[s2_indx])){
+                    s1_indx ++;
+                    s2_indx ++;
+                }else{
+                    return false;
+                }
+            } else if(Character.isDigit(s_1_tokens[s1_indx].charAt(0)) && Character.isDigit(s_2_tokens[s2_indx].charAt(0))){
+                if(Integer.parseInt(s_1_tokens[s1_indx]) > Integer.parseInt(s_2_tokens[s2_indx])){
+                    return false;
+                }else{
+                    s1_indx ++;
+                    s2_indx ++;
+                }
+            }else{
+                if(Character.isDigit(s_1_tokens[s1_indx].charAt(0))){
+                    return false;
+                }else{
+                    s1_indx ++;
+                    s2_indx ++;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private static String[] getToken(String s) {
+        ArrayList<String> token_list = new ArrayList<>();
+        StringBuilder interm_str = new StringBuilder();
+        for (int i = 0; i < s.length() ; i++) {
+            if(Character.isAlphabetic(s.charAt(i))){
+                if(interm_str.length() > 0 ){
+                    token_list.add(interm_str.toString());
+                    interm_str.setLength(0);
+                }
+                token_list.add(Character.toString(s.charAt(i)));
+            }else{
+                if(Character.getNumericValue(s.charAt(i)) != 0 ){
+                    interm_str.append(s.charAt(i));
+                }
+            }
+        }
+        if(interm_str.length() > 0 ) token_list.add(interm_str.toString());
+        return Arrays.copyOf(token_list.toArray(), token_list.size(), String[].class);
+    }
+
 
 }
